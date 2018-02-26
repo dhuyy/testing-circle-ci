@@ -36,8 +36,8 @@ jobs:
       # run tests!
       - run: ./node_modules/mocha/bin/mocha --exit
 
-  deploy:
-    hub:
-      branch: master
-      commands:
-        - $DOCKER_HUB_TRIGGER_REQUEST
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              curl -H "Content-Type: application/json" --data '{"build": true}' -X POST https://registry.hub.docker.com/u/dhuyy/testing-circle-ci/trigger/bf7e5227-b671-4d61-ab21-445265e087c4/
+            fi
